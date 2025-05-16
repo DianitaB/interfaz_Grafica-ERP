@@ -16,7 +16,7 @@ public class SistemaView extends Frame {
 
 
         Panel panelSuperior = new Panel(new BorderLayout());
-        panelSuperior.setBackground(Color.pink);
+        panelSuperior.setBackground(Color.lightGray);
         panelSuperior.setPreferredSize(new Dimension(800, 80));
 
         // Logo (izquierda)
@@ -58,7 +58,7 @@ public class SistemaView extends Frame {
         Button botonEmpleados = new Button("Empleados");
         Button botonConfiguracion = new Button("Configuracion");
 
-        Color botonColor = Color.pink;
+        Color botonColor = Color.LIGHT_GRAY;
         botonInicio.setBackground(botonColor);
         botonSolicitudes.setBackground(botonColor);
         botonProductos.setBackground(botonColor);
