@@ -1,112 +1,140 @@
 package ec.edu.ups.poo.view;
-
 import java.awt.*;
-import java.awt.event.*;
+
 
 public class SistemaView extends Frame {
-
     private Panel panelGeneral;
+    private Panel panelTitulo;
+    private Panel panelIzquierdo;
+    private Button botonSolicitudCompra;
+    private Button botonProductos;
+    private Button botonEmpleados;
+    private Button botonProveedores;
+    private Button empleados;
+    private Button botonSalir;
+    private Label labelTitulo;
+
+    public Panel getPanelGeneral() {
+        return panelGeneral;
+    }
+
+    public Button getBotonEmpleados() {
+        return botonEmpleados;
+    }
+
+    public void setBotonEmpleados(Button botonEmpleados) {
+        this.botonEmpleados = botonEmpleados;
+    }
+
+    public void setPanelGeneral(Panel panelGeneral) {
+        this.panelGeneral = panelGeneral;
+    }
+
+    public Panel getPanelIzquierdo() {
+        return panelIzquierdo;
+    }
+
+    public void setPanelIzquierdo(Panel panelIzquierdo) {
+        this.panelIzquierdo = panelIzquierdo;
+    }
+
+    public Panel getPanelTitulo() {
+        return panelTitulo;
+    }
+
+    public void setPanelTitulo(Panel panelTitulo) {
+        this.panelTitulo = panelTitulo;
+    }
+
+    public Button getBotonSolicitudCompra() {
+        return botonSolicitudCompra;
+    }
+
+    public void setBotonSolicitudCompra(Button botonSolicitudCompra) {
+        this.botonSolicitudCompra = botonSolicitudCompra;
+    }
+
+    public Button getBotonProductos() {
+        return botonProductos;
+    }
+
+    public void setBotonProductos(Button botonProductos) {
+        this.botonProductos = botonProductos;
+    }
+
+    public Button getBotonProveedores() {
+        return botonProveedores;
+    }
+
+    public void setBotonProveedores(Button botonProveedores) {
+        this.botonProveedores = botonProveedores;
+    }
+
+    public Button getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(Button empleados) {
+        this.empleados = empleados;
+    }
+
+    public Button getBotonSalir() {
+        return botonSalir;
+    }
+
+    public void setBotonSalir(Button botonSalir) {
+        this.botonSalir = botonSalir;
+    }
+
+    public Label getLabelTitulo() {
+        return labelTitulo;
+    }
+
+    public void setLabelTitulo(Label labelTitulo) {
+        this.labelTitulo = labelTitulo;
+    }
 
     public SistemaView() {
-        setTitle("Sistema de Gestión ERP");
-        setSize(800, 600);
+        setTitle("Sistema ERP");
+        setSize(700,700);
         setBackground(Color.WHITE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        setVisible(true);
+        setLocationRelativeTo(null);
+
+        panelGeneral = new Panel(new BorderLayout());
+        panelGeneral.setBackground(Color.WHITE);
+
+        panelTitulo = new Panel(new GridLayout(1,1));
+        panelTitulo.setBackground(new Color(245,245,245));
 
 
-        Panel panelSuperior = new Panel(new BorderLayout());
-        panelSuperior.setBackground(Color.lightGray);
-        panelSuperior.setPreferredSize(new Dimension(800, 80));
+        Label labelTitulo = new Label("SISTEMA DE GESTIÓN ERP", Label.CENTER);
+        labelTitulo.setFont(new Font("Arial", Font.BOLD, 20));
+        panelTitulo.add(labelTitulo);
 
-        // Logo (izquierda)
-        Panel logoPanel = new Panel();
-        logoPanel.add(new Label("LOGO"));
-
-        // Título (centro)
-        Panel titlePanel = new Panel();
-        Label title = new Label("SISTEMA DE GESTIÓN ERP");
-        title.setFont(new Font("Arial", Font.BOLD, 16));
-        titlePanel.add(title);
-
-        // Usuario y ayuda (derecha)
-        Panel userPanel = new Panel(new GridLayout(2, 1));
-        Panel lupa = new Panel(new FlowLayout(FlowLayout.RIGHT));
-        lupa.add(new Button("?"));
-        lupa.add(new Label("Tu nombre"));
-
-        Panel buscador = new Panel(new FlowLayout(FlowLayout.RIGHT));
-        buscador.add(new Label("🔍"));
-        buscador.add(new TextField(10));
-
-        userPanel.add(lupa);
-        userPanel.add(buscador);
-
-        panelSuperior.add(logoPanel, BorderLayout.WEST);
-        panelSuperior.add(titlePanel, BorderLayout.CENTER);
-        panelSuperior.add(userPanel, BorderLayout.EAST);
+        panelIzquierdo = new Panel(new GridLayout(5,1,0,10));
+        panelIzquierdo.setBackground(new Color(230,230,230));
+        panelIzquierdo.setPreferredSize(new Dimension(200,0));
 
 
-        Panel panelIzquierdo = new Panel(new GridLayout(6, 1));
-        panelIzquierdo.setPreferredSize(new Dimension(200, 0));
-        panelIzquierdo.setBackground(Color.GRAY);
+        panelGeneral.add(panelTitulo,BorderLayout.NORTH);
+        panelGeneral.add(panelIzquierdo,BorderLayout.WEST);
 
-        Button botonInicio = new Button("Inicio");
-        Button botonSolicitudes = new Button("Solicitudes de compra");
-        Button botonProductos = new Button("Productos");
-        Button botonProveedores = new Button("Proveedores");
-        Button botonEmpleados = new Button("Empleados");
-        Button botonConfiguracion = new Button("Configuracion");
 
-        Color botonColor = Color.LIGHT_GRAY;
-        botonInicio.setBackground(botonColor);
-        botonSolicitudes.setBackground(botonColor);
-        botonProductos.setBackground(botonColor);
-        botonProveedores.setBackground(botonColor);
-        botonEmpleados.setBackground(botonColor);
-        botonConfiguracion.setBackground(botonColor);
+        botonSolicitudCompra = new Button("Solicitudes de Compra");
+        botonProductos = new Button("Productos");
+        botonProveedores = new Button("Proveedores");
+        botonEmpleados = new Button("Empleados");
+        botonSalir = new Button("Salir");
 
-        // Agregar los actionlistener
-
-        //
-         ///
-
-        panelIzquierdo.add(botonInicio);
-        panelIzquierdo.add(botonSolicitudes);
+        panelIzquierdo.add(botonSolicitudCompra);
         panelIzquierdo.add(botonProductos);
         panelIzquierdo.add(botonProveedores);
         panelIzquierdo.add(botonEmpleados);
-        panelIzquierdo.add(botonConfiguracion);
+        panelIzquierdo.add(botonSalir);
+        add(panelGeneral);
 
-        // Panel de contenido central
-        panelGeneral = new Panel();
-        panelGeneral.add(new Label("Contenido principal aquí"));
-
-        // Agregar todo al Frame
-        add(panelSuperior, BorderLayout.NORTH);
-        add(panelIzquierdo, BorderLayout.WEST);
-        add(panelGeneral, BorderLayout.CENTER);
-
-        // Cierre del Frame
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                dispose();
-            }
-        });
-
-        setVisible(true);
     }
-
-    // Clase interna para manejar clics de botones del menú
-    private class MenuListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            String comando = e.getActionCommand();
-            panelGeneral.removeAll();
-            panelGeneral.add(new Label("Has seleccionado: " + comando));
-            panelGeneral.revalidate();
-            panelGeneral.repaint();
-        }
-    }
-
 
 }
