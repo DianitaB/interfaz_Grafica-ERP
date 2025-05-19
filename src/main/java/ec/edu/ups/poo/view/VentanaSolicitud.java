@@ -1,81 +1,103 @@
 package ec.edu.ups.poo.view;
 
-import ec.edu.ups.poo.model.EstadoSolicitud;
-
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Date;
+import java.awt.event.*;
 
 public class VentanaSolicitud extends Frame {
-    private TextField txtIdSolicitud;
-    private TextField txtFechaSolicitud;
-    private Choice choiceEstado;
-    private TextArea txtObservaciones;
-    private TextField txtTotal;
-    private Button btnGuardar;
-    private Button btnCancelar;
 
-    private Panel panelFormulario;
+    private Panel panelGeneral;
+    private Panel panelMenu;
+    private Panel panelContenido;
+    private Button btnRegistrar;
+    private Button btnListar;
+    private Button btnBuscar;
 
 
     public VentanaSolicitud() {
-        setTitle("Solicitud de Compra");
-        setSize(700, 700);
+        setTitle("Gestión de Solicitudes de Compra");
+        setSize(600, 500);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
-        setBackground(Color.WHITE);
 
-        Label titulo = new Label("Solicitudes de Compra", Label.CENTER);
-        titulo.setFont(new Font("Arial", Font.BOLD, 16));
-        add(titulo, BorderLayout.NORTH);
+        panelGeneral = new Panel(new BorderLayout());
 
-        panelFormulario = new Panel(new GridLayout(5,2,10,10));
-        panelFormulario.setBackground(Color.WHITE);
-        panelFormulario.setFont(new Font("Arial", Font.PLAIN, 14));
-        panelFormulario.setPreferredSize(new Dimension(400, 300));
+        panelMenu = new Panel(new GridLayout(1, 3));
+        panelMenu.setBackground(new Color(220, 220, 220));
 
-        panelFormulario.add(new Label("Id Solicitud:"));
-        txtIdSolicitud = new TextField();
-        panelFormulario.add(txtIdSolicitud);
+        btnRegistrar = new Button("Registrar Solicitud");
+        btnListar = new Button("Listar Solicitudes");
+        btnBuscar = new Button("Buscar por Número");
 
-        panelFormulario.add(new Label("Fecha:"));
-        txtFechaSolicitud = new TextField(new Date().toString());
-        txtFechaSolicitud.setEditable(false);
-        panelFormulario.add(txtFechaSolicitud);
+        panelMenu.add(btnRegistrar);
+        panelMenu.add(btnListar);
+        panelMenu.add(btnBuscar);
 
-        panelFormulario.add(new Label("Estado:"));
-        choiceEstado = new Choice();
-        for (EstadoSolicitud estado : EstadoSolicitud.values()) {
-            choiceEstado.add(estado.name());
-        }
-        panelFormulario.add(choiceEstado);
+        panelContenido = new Panel();
+        panelContenido.setLayout(new BorderLayout());
+        panelContenido.setBackground(Color.WHITE);
 
-        panelFormulario.add(new Label("Observaciones:"));
-        txtObservaciones = new TextArea(3, 30);
-        panelFormulario.add(txtObservaciones);
+        panelGeneral.add(panelMenu, BorderLayout.NORTH);
+        panelGeneral.add(panelContenido, BorderLayout.CENTER);
+        add(panelGeneral);
 
-        panelFormulario.add(new Label("Total:"));
-        txtTotal = new TextField();
-        panelFormulario.add(txtTotal);
-        add(panelFormulario, BorderLayout.CENTER);
+        btnRegistrar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mostrarFormularioRegistro();
+            }
+        });
 
-        Panel panelBotones = new Panel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        panelBotones.setBackground(Color.WHITE);
-        btnGuardar = new Button("Guardar");
-        btnCancelar = new Button("Cancelar");
+        btnListar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mostrarListaSolicitudes();
+            }
+        });
 
-        panelBotones.add(btnGuardar);
-        panelBotones.add(btnCancelar);
-        add(panelBotones, BorderLayout.SOUTH);
-
-
+        btnBuscar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mostrarFormularioBusqueda();
+            }
+        });
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 dispose();
             }
         });
+
         setVisible(true);
+    }
+
+    private void mostrarFormularioRegistro() {
+        panelContenido.removeAll();
+        Panel registro = new Panel(new GridLayout(4, 2, 10, 10));
+        registro.add(new Label("Número de Solicitud:"));
+        registro.add(new TextField());
+        registro.add(new Label("Departamento:"));
+        registro.add(new TextField());
+        registro.add(new Label("Fecha:"));
+        registro.add(new TextField());
+        registro.add(new Label("Descripción:"));
+        registro.add(new TextField());
+        panelContenido.add(registro, BorderLayout.NORTH);
+        panelContenido.revalidate();
+        panelContenido.repaint();
+    }
+
+    private void mostrarListaSolicitudes() {
+        panelContenido.removeAll();
+        TextArea area = new TextArea("Aquí se mostrarán todas las solicitudes...", 10, 50);
+        panelContenido.add(area, BorderLayout.CENTER);
+        panelContenido.revalidate();
+        panelContenido.repaint();
+    }
+
+    private void mostrarFormularioBusqueda() {
+        panelContenido.removeAll();
+        Panel buscar = new Panel(new FlowLayout());
+        buscar.add(new Label("Ingrese Número de Solicitud:"));
+        buscar.add(new TextField(15));
+        panelContenido.add(buscar, BorderLayout.NORTH);
+        panelContenido.revalidate();
+        panelContenido.repaint();
     }
 }
