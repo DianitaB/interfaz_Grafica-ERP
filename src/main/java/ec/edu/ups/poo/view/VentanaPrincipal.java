@@ -1,8 +1,12 @@
 package ec.edu.ups.poo.view;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
-public class SistemaView extends Frame {
+public class VentanaPrincipal extends Frame {
     private Panel panelGeneral;
     private Panel panelTitulo;
     private Panel panelIzquierdo;
@@ -66,6 +70,7 @@ public class SistemaView extends Frame {
         return botonProveedores;
     }
 
+
     public void setBotonProveedores(Button botonProveedores) {
         this.botonProveedores = botonProveedores;
     }
@@ -94,7 +99,7 @@ public class SistemaView extends Frame {
         this.labelTitulo = labelTitulo;
     }
 
-    public SistemaView() {
+    public VentanaPrincipal() {
         setTitle("Sistema ERP");
         setSize(700,700);
         setBackground(Color.WHITE);
@@ -123,9 +128,41 @@ public class SistemaView extends Frame {
 
 
         botonSolicitudCompra = new Button("Solicitudes de Compra");
+        botonSolicitudCompra.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new VentanaSolicitud();
+            }
+        });
+
+
         botonProductos = new Button("Productos");
+        botonProductos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new VentanaProducto();
+            }
+        });
+
+
         botonProveedores = new Button("Proveedores");
+        botonProveedores.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new VentanaProveedor();
+            }
+        });
+
+
         botonEmpleados = new Button("Empleados");
+        botonEmpleados.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new VentanaEmpleado();
+            }
+        });
+
+
         botonSalir = new Button("Salir");
 
         panelIzquierdo.add(botonSolicitudCompra);
@@ -135,6 +172,10 @@ public class SistemaView extends Frame {
         panelIzquierdo.add(botonSalir);
         add(panelGeneral);
 
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
     }
-
 }
