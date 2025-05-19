@@ -9,7 +9,8 @@ import java.awt.event.WindowEvent;
 public class VentanaPrincipal extends Frame {
     private Panel panelGeneral;
     private Panel panelTitulo;
-    private Panel panelIzquierdo;
+    private Panel panelBotones;
+    private Panel panelCentro;
     private Button botonSolicitudCompra;
     private Button botonProductos;
     private Button botonEmpleados;
@@ -34,13 +35,6 @@ public class VentanaPrincipal extends Frame {
         this.panelGeneral = panelGeneral;
     }
 
-    public Panel getPanelIzquierdo() {
-        return panelIzquierdo;
-    }
-
-    public void setPanelIzquierdo(Panel panelIzquierdo) {
-        this.panelIzquierdo = panelIzquierdo;
-    }
 
     public Panel getPanelTitulo() {
         return panelTitulo;
@@ -104,7 +98,6 @@ public class VentanaPrincipal extends Frame {
         setSize(700,700);
         setBackground(Color.WHITE);
         setLayout(new BorderLayout());
-        setVisible(true);
         setLocationRelativeTo(null);
 
         panelGeneral = new Panel(new BorderLayout());
@@ -112,19 +105,12 @@ public class VentanaPrincipal extends Frame {
 
         panelTitulo = new Panel(new GridLayout(1,1));
         panelTitulo.setBackground(new Color(245,245,245));
-
-
-        Label labelTitulo = new Label("SISTEMA DE GESTIÓN ERP", Label.CENTER);
+        labelTitulo = new Label("SISTEMA DE GESTIÓN ERP", Label.CENTER);
         labelTitulo.setFont(new Font("Arial", Font.BOLD, 20));
+        labelTitulo.setForeground(Color.BLACK);
         panelTitulo.add(labelTitulo);
 
-        panelIzquierdo = new Panel(new GridLayout(5,1,0,10));
-        panelIzquierdo.setBackground(new Color(230,230,230));
-        panelIzquierdo.setPreferredSize(new Dimension(200,0));
-
-
         panelGeneral.add(panelTitulo,BorderLayout.NORTH);
-        panelGeneral.add(panelIzquierdo,BorderLayout.WEST);
 
 
         botonSolicitudCompra = new Button("Solicitudes de Compra");
@@ -164,18 +150,30 @@ public class VentanaPrincipal extends Frame {
 
 
         botonSalir = new Button("Salir");
+        panelBotones = new Panel(new GridLayout(5,1,20,20));
+        panelBotones.setBackground(new Color(230,230,230));
+        panelBotones.setPreferredSize(new Dimension(300,400));
 
-        panelIzquierdo.add(botonSolicitudCompra);
-        panelIzquierdo.add(botonProductos);
-        panelIzquierdo.add(botonProveedores);
-        panelIzquierdo.add(botonEmpleados);
-        panelIzquierdo.add(botonSalir);
-        add(panelGeneral);
+        panelBotones.add(botonSolicitudCompra);
+        panelBotones.add(botonProductos);
+        panelBotones.add(botonProveedores);
+        panelBotones.add(botonEmpleados);
+        panelBotones.add(botonSalir);
+
+        panelCentro = new Panel(new GridLayout());
+        panelCentro.setBackground(Color.WHITE);
+        panelCentro.add(panelBotones);
+
+        panelGeneral.add(panelTitulo,BorderLayout.NORTH);
+        panelGeneral.add(panelCentro,BorderLayout.CENTER);
+        add(panelGeneral, BorderLayout.CENTER);
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }
         });
+        setVisible(true);
+
     }
 }

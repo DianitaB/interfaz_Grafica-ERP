@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;
 public class VentanaProveedor extends Frame {
     public VentanaProveedor() {
         setTitle("Solicitud de Compra");
-        setSize(400, 300);
+        setSize(700, 700);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         setBackground(Color.WHITE);
