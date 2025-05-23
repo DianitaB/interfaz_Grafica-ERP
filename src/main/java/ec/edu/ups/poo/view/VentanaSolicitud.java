@@ -241,18 +241,18 @@ public class VentanaSolicitud extends Frame {
     }
 
     private void mostrarAlerta(String mensaje) {
-        Dialog mensaje = new Dialog(this, "Mensaje", true);
-        mensaje.setLayout(new FlowLayout());
-        mensaje.setSize(300, 100);
-        mensaje.setLocationRelativeTo(this);
+        Dialog mensajito = new Dialog(this, "Mensaje", true);
+        mensajito.setLayout(new FlowLayout());
+        mensajito.setSize(300, 100);
+        mensajito.setLocationRelativeTo(this);
 
         lblMensaje = new Label(mensaje);
         btnCerrar = new Button("Cerrar");
-        btnCerrar.addActionListener(e -> mensaje.dispose());
+        btnCerrar.addActionListener(e -> mensajito.dispose());
 
-        mensaje.add(lblMensaje);
-        mensaje.add(btnCerrar);
-        mensaje.setVisible(true);
+        mensajito.add(lblMensaje);
+        mensajito.add(btnCerrar);
+        mensajito.setVisible(true);
 
     }
 }
