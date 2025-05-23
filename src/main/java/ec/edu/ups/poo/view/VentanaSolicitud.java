@@ -1,9 +1,11 @@
 package ec.edu.ups.poo.view;
+
 import ec.edu.ups.poo.model.EstadoSolicitud;
 import ec.edu.ups.poo.model.SolicitudCompra;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class VentanaSolicitud extends Frame {
@@ -20,15 +22,20 @@ public class VentanaSolicitud extends Frame {
     private TextField txtFecha;
     private TextField txtEstado;
     private TextField txtObservaciones;
+    private ArrayList<SolicitudCompra> solicitudes;
 
-    public VentanaSolicitud() {
+
+    private ArrayList<SolicitudCompra> listaSolicitudes;
+
+    public VentanaSolicitud(ArrayList<SolicitudCompra> listaSolicitudes) {
+        this.listaSolicitudes = listaSolicitudes;
+
         setTitle("Gestión de Solicitudes de Compra");
         setSize(600, 500);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
 
         panelGeneral = new Panel(new BorderLayout());
-
 
         panelMenu = new Panel(new GridLayout(1, 3));
         panelMenu.setBackground(Color.LIGHT_GRAY);
@@ -41,14 +48,12 @@ public class VentanaSolicitud extends Frame {
         panelMenu.add(btnListar);
         panelMenu.add(btnBuscar);
 
-
         panelContenido = new Panel(new BorderLayout());
         panelContenido.setBackground(Color.WHITE);
 
         panelGeneral.add(panelMenu, BorderLayout.NORTH);
         panelGeneral.add(panelContenido, BorderLayout.CENTER);
         add(panelGeneral);
-
 
         btnRegistrar.addActionListener(e -> mostrarFormularioRegistro());
         btnListar.addActionListener(e -> mostrarListaSolicitudes());
@@ -70,6 +75,7 @@ public class VentanaSolicitud extends Frame {
 
         txtId = new TextField();
         txtFecha = new TextField(new Date().toString());
+        txtFecha.setEditable(false);
         txtEstado = new TextField("SOLICITADO");
         txtEstado.setEditable(false);
         txtObservaciones = new TextField();
@@ -97,7 +103,7 @@ public class VentanaSolicitud extends Frame {
                 nueva.setEstado(EstadoSolicitud.SOLICITADO);
                 nueva.setObservaciones(observaciones);
 
-                SolicitudCompra.registrar(nueva);
+                listaSolicitudes.add(nueva);
 
                 txtId.setText("");
                 txtFecha.setText(new Date().toString());
@@ -132,7 +138,7 @@ public class VentanaSolicitud extends Frame {
         panelContenido.removeAll();
 
         TextArea area = new TextArea();
-        for (SolicitudCompra s : SolicitudCompra.getSolicitudes()) {
+        for (SolicitudCompra s : listaSolicitudes) {
             area.append(s.toString() + "\n");
         }
 
@@ -153,12 +159,19 @@ public class VentanaSolicitud extends Frame {
         TextArea resultado = new TextArea(5, 50);
         resultado.setEditable(false);
 
+        Choice estadoChoice = new Choice();
+        for (EstadoSolicitud estado : EstadoSolicitud.values()) {
+            estadoChoice.add(estado.name());
+        }
+
+        Button btnCambiarEstado = new Button("Cambiar Estado");
+
         btnBuscarId.addActionListener(e -> {
             try {
                 int id = Integer.parseInt(txtBuscar.getText());
-                SolicitudCompra solicitud = SolicitudCompra.buscarPorId(id);
-
+                SolicitudCompra solicitud = buscarSolicitudPorId(id);
                 resultado.setText("");
+
                 if (solicitud != null) {
                     resultado.append(solicitud.toString());
                 } else {
@@ -169,15 +182,47 @@ public class VentanaSolicitud extends Frame {
             }
         });
 
+        btnCambiarEstado.addActionListener(e -> {
+            try {
+                int id = Integer.parseInt(txtBuscar.getText());
+                SolicitudCompra solicitud = buscarSolicitudPorId(id);
+
+                if (solicitud != null) {
+                    EstadoSolicitud nuevoEstado = EstadoSolicitud.valueOf(estadoChoice.getSelectedItem());
+                    solicitud.setEstado(nuevoEstado);
+                    resultado.setText(solicitud.toString());
+                } else {
+                    mostrarMensaje("Solicitud no encontrada.");
+                }
+            } catch (Exception ex) {
+                mostrarMensaje("Error al cambiar el estado.");
+            }
+        });
+
         buscar.add(lbl);
         buscar.add(txtBuscar);
         buscar.add(btnBuscarId);
 
+        Panel panelEstado = new Panel(new FlowLayout());
+        panelEstado.add(new Label("Nuevo estado:"));
+        panelEstado.add(estadoChoice);
+        panelEstado.add(btnCambiarEstado);
+
         panelContenido.add(buscar, BorderLayout.NORTH);
         panelContenido.add(resultado, BorderLayout.CENTER);
+        panelContenido.add(panelEstado, BorderLayout.SOUTH);
 
         panelContenido.revalidate();
         panelContenido.repaint();
+    }
+
+    private SolicitudCompra buscarSolicitudPorId(int id) {
+        for (SolicitudCompra s : listaSolicitudes) {
+            if (s.getIdSolicitud() == id) {
+                return s;
+            }
+        }
+        return null;
     }
 
     private void mostrarMensaje(String mensaje) {

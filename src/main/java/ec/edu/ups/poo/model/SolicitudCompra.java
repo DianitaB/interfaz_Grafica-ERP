@@ -10,7 +10,6 @@ public class SolicitudCompra {
     private Date fecha;
     private EstadoSolicitud estado;
     private String observaciones;
-    private Double total;
     private List<DetalleSolicitud> detalles;
 
     private static ArrayList<SolicitudCompra> solicitudes = new ArrayList<>();
@@ -50,45 +49,13 @@ public class SolicitudCompra {
     public SolicitudCompra() {
         this.detalles = new ArrayList<>();
         this.fecha = new Date();
-        this.estado = EstadoSolicitud.SOLICITADO; // por defecto
+        this.estado = EstadoSolicitud.SOLICITADO;
     }
-
-    public static void registrar(SolicitudCompra solicitud) {
-        solicitudes.add(solicitud);
-    }
-
-    public static ArrayList<SolicitudCompra> getSolicitudes() {
-        return solicitudes;
-    }
-
-    public static SolicitudCompra buscarPorId(int id) {
-        for (SolicitudCompra s : solicitudes) {
-            if (s.getIdSolicitud() == id) {
-                return s;
-            }
-        }
-        return null;
-    }
-
-    public static void aprobar(int id) {
-        SolicitudCompra solicitud = buscarPorId(id);
-        if (solicitud != null) {
-            solicitud.setEstado(EstadoSolicitud.APROBADO);
-        }
-    }
-
-    public static void rechazar(int id) {
-        SolicitudCompra solicitud = buscarPorId(id);
-        if (solicitud != null) {
-            solicitud.setEstado(EstadoSolicitud.RECHAZADO);
-        }
-    }
-
     @Override
     public String toString() {
-        return "ID: " + idSolicitud +
-                " Fecha: " + fecha +
-                " Estado: " + estado +
-                " Observaciones: " + observaciones;
+        return "\nID: " + idSolicitud +
+                "\nFecha: " + fecha +
+                "\nEstado: " + estado +
+                "\nObservaciones: " + observaciones;
     }
 }
