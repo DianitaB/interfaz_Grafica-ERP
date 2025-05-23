@@ -10,21 +10,36 @@ import java.util.Date;
 
 public class VentanaSolicitud extends Frame {
 
+
     private Panel panelGeneral;
     private Panel panelMenu;
     private Panel panelContenido;
+    private Panel formulario;
+    private Panel panelBotones;
+    private Panel buscar;
+    private Panel panelEstado;
+
+    private Label lbl;
+    private Label lblMensaje;
+
+    private Choice estadoChoice;
 
     private Button btnRegistrar;
     private Button btnListar;
     private Button btnBuscar;
+    private Button btnGuardar;
+    private Button btnLimpiar;
+    private Button btnCambiarEstado;
+    private Button btnBuscarId;
+    private Button btnCerrar;
 
     private TextField txtId;
     private TextField txtFecha;
     private TextField txtEstado;
     private TextField txtObservaciones;
-    private ArrayList<SolicitudCompra> solicitudes;
-
-
+    private TextField txtBuscar;
+    private TextArea area;
+    private TextArea resultado;
     private ArrayList<SolicitudCompra> listaSolicitudes;
 
     public VentanaSolicitud(ArrayList<SolicitudCompra> listaSolicitudes) {
@@ -71,7 +86,7 @@ public class VentanaSolicitud extends Frame {
     private void mostrarFormularioRegistro() {
         panelContenido.removeAll();
 
-        Panel formulario = new Panel(new GridLayout(5, 2, 10, 10));
+        formulario = new Panel(new GridLayout(5, 2, 10, 10));
 
         txtId = new TextField();
         txtFecha = new TextField(new Date().toString());
@@ -89,8 +104,8 @@ public class VentanaSolicitud extends Frame {
         formulario.add(new Label("Observaciones:"));
         formulario.add(txtObservaciones);
 
-        Button btnGuardar = new Button("Registrar");
-        Button btnLimpiar = new Button("Limpiar");
+        btnGuardar = new Button("Registrar");
+        btnLimpiar = new Button("Limpiar");
 
         btnGuardar.addActionListener(e -> {
             try {
@@ -110,9 +125,9 @@ public class VentanaSolicitud extends Frame {
                 txtEstado.setText("SOLICITADO");
                 txtObservaciones.setText("");
 
-                mostrarMensaje("Solicitud registrada exitosamente.");
+                mostrarAlerta("Solicitud registrada exitosamente.");
             } catch (NumberFormatException ex) {
-                mostrarMensaje("ID inválido. Ingrese un número.");
+                mostrarAlerta("ID inválido. Ingrese un número.");
             }
         });
 
@@ -123,7 +138,7 @@ public class VentanaSolicitud extends Frame {
             txtObservaciones.setText("");
         });
 
-        Panel panelBotones = new Panel(new FlowLayout());
+        panelBotones = new Panel(new FlowLayout());
         panelBotones.add(btnGuardar);
         panelBotones.add(btnLimpiar);
 
@@ -137,7 +152,7 @@ public class VentanaSolicitud extends Frame {
     private void mostrarListaSolicitudes() {
         panelContenido.removeAll();
 
-        TextArea area = new TextArea();
+        area = new TextArea();
         for (SolicitudCompra s : listaSolicitudes) {
             area.append(s.toString() + "\n");
         }
@@ -151,20 +166,20 @@ public class VentanaSolicitud extends Frame {
     private void mostrarFormularioBusqueda() {
         panelContenido.removeAll();
 
-        Panel buscar = new Panel(new FlowLayout());
-        Label lbl = new Label("Ingrese ID:");
-        TextField txtBuscar = new TextField(10);
-        Button btnBuscarId = new Button("Buscar");
+        buscar = new Panel(new FlowLayout());
+        lbl = new Label("Ingrese ID:");
+        txtBuscar = new TextField(10);
+        btnBuscarId = new Button("Buscar");
 
-        TextArea resultado = new TextArea(5, 50);
+        resultado = new TextArea(5, 50);
         resultado.setEditable(false);
 
-        Choice estadoChoice = new Choice();
+        estadoChoice = new Choice();
         for (EstadoSolicitud estado : EstadoSolicitud.values()) {
             estadoChoice.add(estado.name());
         }
 
-        Button btnCambiarEstado = new Button("Cambiar Estado");
+        btnCambiarEstado = new Button("Cambiar Estado");
 
         btnBuscarId.addActionListener(e -> {
             try {
@@ -192,10 +207,10 @@ public class VentanaSolicitud extends Frame {
                     solicitud.setEstado(nuevoEstado);
                     resultado.setText(solicitud.toString());
                 } else {
-                    mostrarMensaje("Solicitud no encontrada.");
+                    mostrarAlerta("Solicitud no encontrada.");
                 }
             } catch (Exception ex) {
-                mostrarMensaje("Error al cambiar el estado.");
+                mostrarAlerta("Error al cambiar el estado.");
             }
         });
 
@@ -203,7 +218,7 @@ public class VentanaSolicitud extends Frame {
         buscar.add(txtBuscar);
         buscar.add(btnBuscarId);
 
-        Panel panelEstado = new Panel(new FlowLayout());
+        panelEstado = new Panel(new FlowLayout());
         panelEstado.add(new Label("Nuevo estado:"));
         panelEstado.add(estadoChoice);
         panelEstado.add(btnCambiarEstado);
@@ -217,26 +232,27 @@ public class VentanaSolicitud extends Frame {
     }
 
     private SolicitudCompra buscarSolicitudPorId(int id) {
-        for (SolicitudCompra s : listaSolicitudes) {
-            if (s.getIdSolicitud() == id) {
-                return s;
+        for (SolicitudCompra solis : listaSolicitudes) {
+            if (solis.getIdSolicitud() == id) {
+                return solis;
             }
         }
         return null;
     }
 
-    private void mostrarMensaje(String mensaje) {
-        Dialog dialogo = new Dialog(this, "Mensaje", true);
-        dialogo.setLayout(new FlowLayout());
-        dialogo.setSize(300, 100);
-        dialogo.setLocationRelativeTo(this);
+    private void mostrarAlerta(String mensaje) {
+        Dialog mensaje = new Dialog(this, "Mensaje", true);
+        mensaje.setLayout(new FlowLayout());
+        mensaje.setSize(300, 100);
+        mensaje.setLocationRelativeTo(this);
 
-        Label lblMensaje = new Label(mensaje);
-        Button btnCerrar = new Button("Cerrar");
-        btnCerrar.addActionListener(e -> dialogo.dispose());
+        lblMensaje = new Label(mensaje);
+        btnCerrar = new Button("Cerrar");
+        btnCerrar.addActionListener(e -> mensaje.dispose());
 
-        dialogo.add(lblMensaje);
-        dialogo.add(btnCerrar);
-        dialogo.setVisible(true);
+        mensaje.add(lblMensaje);
+        mensaje.add(btnCerrar);
+        mensaje.setVisible(true);
+
     }
 }
