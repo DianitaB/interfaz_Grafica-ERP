@@ -12,8 +12,6 @@ public class SolicitudCompra {
     private String observaciones;
     private List<DetalleSolicitud> detalles;
 
-    private static ArrayList<SolicitudCompra> solicitudes = new ArrayList<>();
-
     public Date getFecha() {
         return fecha;
     }

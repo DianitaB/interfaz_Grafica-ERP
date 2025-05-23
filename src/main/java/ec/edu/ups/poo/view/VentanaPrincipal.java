@@ -20,7 +20,7 @@ public class VentanaPrincipal extends Frame {
     private Label labelTitulo;
 
 
-    public VentanaPrincipal() {
+    public VentanaPrincipal(ArrayList<SolicitudCompra> listaSolicitudes) {
         setTitle("Sistema ERP");
         setSize(700, 700);
         setBackground(Color.BLUE);
@@ -44,10 +44,9 @@ public class VentanaPrincipal extends Frame {
         botonEmpleados = new Button("Empleados");
         botonSalir = new Button("Salir");
 
-        ArrayList<SolicitudCompra> listaSolicitudes = new ArrayList<>();
+        // ✅ Usar la lista recibida por el constructor
         botonSolicitudCompra.addActionListener(e -> new VentanaSolicitud(listaSolicitudes));
-
-        botonProductos.addActionListener(e -> new VentanaProducto(null)); // se pasa null
+        botonProductos.addActionListener(e -> new VentanaProducto(null));
         botonProveedores.addActionListener(e -> new VentanaProveedor());
         botonEmpleados.addActionListener(e -> new VentanaEmpleado());
         botonSalir.addActionListener(e -> System.exit(0));
@@ -62,7 +61,7 @@ public class VentanaPrincipal extends Frame {
         panelBotones.add(botonSalir);
 
         panelCentro = new Panel(new GridLayout());
-        panelCentro.setBackground(Color.BLUE);
+        panelCentro.setBackground(Color.WHITE);
         panelCentro.add(panelBotones);
 
         panelGeneral.add(panelCentro, BorderLayout.CENTER);
@@ -76,4 +75,5 @@ public class VentanaPrincipal extends Frame {
 
         setVisible(true);
     }
+
 }
