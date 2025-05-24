@@ -1,6 +1,7 @@
 package ec.edu.ups.poo.view;
 
 import ec.edu.ups.poo.model.Proveedor;
+import ec.edu.ups.poo.model.Producto;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -8,66 +9,57 @@ import java.util.ArrayList;
 
 public class VentanaProducto extends Frame {
 
-    private TextField txtId, txtNombre, txtPrecio;
+    private Panel panelGeneral;
+    private Panel panelMenu;
+    private Panel panelContenido;
+    private Panel formulario;
+    private Panel panelBotones;
+
+    private Label lblMensaje;
+
+    private Button btnRegistrar;
+    private Button btnListar;
+    private Button btnGuardar;
+    private Button btnLimpiar;
+    private Button btnCerrar;
+
+    private TextField txtId;
+    private TextField txtNombre;
+    private TextField txtPrecio;
     private Choice proveedorChoice;
     private TextArea areaSalida;
 
     private ArrayList<Proveedor> proveedores;
+    private ArrayList<Producto> productos = new ArrayList<>();
+    private ArrayList<Proveedor> proveedoresEnChoice = new ArrayList<>();
 
     public VentanaProducto(ArrayList<Proveedor> proveedores) {
         this.proveedores = proveedores;
 
         setTitle("Gestión de Productos");
-        setSize(700, 500);
+        setSize(600, 500);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
-        setBackground(Color.LIGHT_GRAY);
 
-        Label titulo = new Label("Gestión de Productos", Label.CENTER);
-        titulo.setFont(new Font("Arial", Font.BOLD, 18));
-        add(titulo, BorderLayout.NORTH);
+        panelGeneral = new Panel(new BorderLayout());
 
-        Panel panelFormulario = new Panel(new GridLayout(4, 2, 10, 10));
-        panelFormulario.setBackground(Color.WHITE);
+        panelMenu = new Panel(new GridLayout(1, 2));
+        panelMenu.setBackground(Color.LIGHT_GRAY);
 
-        panelFormulario.add(new Label("ID:"));
-        txtId = new TextField();
-        panelFormulario.add(txtId);
+        btnRegistrar = new Button("Registrar Producto");
+        btnListar = new Button("Listar Productos");
+        panelMenu.add(btnRegistrar);
+        panelMenu.add(btnListar);
 
-        panelFormulario.add(new Label("Nombre:"));
-        txtNombre = new TextField();
-        panelFormulario.add(txtNombre);
+        panelContenido = new Panel(new BorderLayout());
+        panelContenido.setBackground(Color.WHITE);
 
-        panelFormulario.add(new Label("Precio:"));
-        txtPrecio = new TextField();
-        panelFormulario.add(txtPrecio);
+        panelGeneral.add(panelMenu, BorderLayout.NORTH);
+        panelGeneral.add(panelContenido, BorderLayout.CENTER);
+        add(panelGeneral);
 
-        panelFormulario.add(new Label("Proveedor:"));
-        proveedorChoice = new Choice();
-        for (Proveedor p : proveedores) {
-            proveedorChoice.add(p.toString());
-        }
-        panelFormulario.add(proveedorChoice);
-
-        add(panelFormulario, BorderLayout.CENTER);
-
-        areaSalida = new TextArea();
-        add(areaSalida, BorderLayout.EAST);
-
-        Panel panelBotones = new Panel(new GridLayout(1, 3, 10, 10));
-        Button btnRegistrar = new Button("Registrar");
-        Button btnLimpiar = new Button("Limpiar");
-        Button btnSalir = new Button("Salir");
-
-        panelBotones.add(btnRegistrar);
-        panelBotones.add(btnLimpiar);
-        panelBotones.add(btnSalir);
-        add(panelBotones, BorderLayout.SOUTH);
-
-        // Eventos
-        btnRegistrar.addActionListener(e -> registrarProducto());
-        btnLimpiar.addActionListener(e -> limpiarCampos());
-        btnSalir.addActionListener(e -> dispose());
+        btnRegistrar.addActionListener(e -> mostrarFormularioRegistro());
+        btnListar.addActionListener(e -> mostrarListaProductos());
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -78,18 +70,98 @@ public class VentanaProducto extends Frame {
         setVisible(true);
     }
 
+    private void mostrarFormularioRegistro() {
+        panelContenido.removeAll();
+
+        formulario = new Panel(new GridLayout(4, 2, 10, 10));
+
+        txtId = new TextField();
+        txtNombre = new TextField();
+        txtPrecio = new TextField();
+        proveedorChoice = new Choice();
+
+        formulario.add(new Label("ID:"));
+        formulario.add(txtId);
+        formulario.add(new Label("Nombre:"));
+        formulario.add(txtNombre);
+        formulario.add(new Label("Precio:"));
+        formulario.add(txtPrecio);
+        formulario.add(new Label("Proveedor:"));
+        formulario.add(proveedorChoice);
+
+        cargarProveedores();
+
+        btnGuardar = new Button("Registrar");
+        btnLimpiar = new Button("Limpiar");
+
+        btnGuardar.addActionListener(e -> registrarProducto());
+        btnLimpiar.addActionListener(e -> limpiarCampos());
+
+        panelBotones = new Panel(new FlowLayout());
+        panelBotones.add(btnGuardar);
+        panelBotones.add(btnLimpiar);
+
+        areaSalida = new TextArea();
+        areaSalida.setEditable(false);
+
+        panelContenido.add(formulario, BorderLayout.NORTH);
+        panelContenido.add(areaSalida, BorderLayout.CENTER);
+        panelContenido.add(panelBotones, BorderLayout.SOUTH);
+
+        panelContenido.revalidate();
+        panelContenido.repaint();
+    }
+
+    private void mostrarListaProductos() {
+        panelContenido.removeAll();
+
+        areaSalida = new TextArea();
+        areaSalida.setEditable(false);
+
+        for (Producto p : productos) {
+            areaSalida.append(p.toString() + "\n");
+        }
+
+        panelContenido.add(areaSalida, BorderLayout.CENTER);
+        panelContenido.revalidate();
+        panelContenido.repaint();
+    }
+
+    private void cargarProveedores() {
+        if (proveedorChoice != null) {
+            proveedorChoice.removeAll();
+            proveedoresEnChoice.clear();
+
+            if (proveedores.isEmpty()) {
+                proveedorChoice.add("Sin proveedores disponibles");
+            } else {
+                for (Proveedor p : proveedores) {
+                    proveedorChoice.add(p.toString());
+                    proveedoresEnChoice.add(p);
+                }
+            }
+        }
+    }
+
     private void registrarProducto() {
         try {
-            String datos = "📦 Producto Registrado:\n";
-            datos += "ID: " + txtId.getText() + "\n";
-            datos += "Nombre: " + txtNombre.getText() + "\n";
-            datos += "Precio: $" + txtPrecio.getText() + "\n";
-            datos += "Proveedor: " + proveedorChoice.getSelectedItem();
+            int id = Integer.parseInt(txtId.getText().trim());
+            String nombre = txtNombre.getText().trim();
+            double precio = Double.parseDouble(txtPrecio.getText().trim());
 
-            areaSalida.setText(datos);
+            int index = proveedorChoice.getSelectedIndex();
+            if (index >= 0 && index < proveedoresEnChoice.size()) {
+                Proveedor proveedorSeleccionado = proveedoresEnChoice.get(index);
+                Producto nuevo = new Producto(id, nombre, precio, proveedorSeleccionado);
+                productos.add(nuevo);
 
-        } catch (Exception e) {
-            areaSalida.setText("Error: " + e.getMessage());
+                areaSalida.setText("\uD83D\uDCE6 Producto Registrado:\n" + nuevo.toString());
+                limpiarCampos();
+            } else {
+                mostrarAlerta("Proveedor inválido o no seleccionado.");
+            }
+        } catch (NumberFormatException e) {
+            mostrarAlerta("ID o Precio inválido. Asegúrese de ingresar valores numéricos válidos.");
         }
     }
 
@@ -97,7 +169,20 @@ public class VentanaProducto extends Frame {
         txtId.setText("");
         txtNombre.setText("");
         txtPrecio.setText("");
-        proveedorChoice.select(0);
-        areaSalida.setText("");
+    }
+
+    private void mostrarAlerta(String mensaje) {
+        Dialog mensajito = new Dialog(this, "Mensaje", true);
+        mensajito.setLayout(new FlowLayout());
+        mensajito.setSize(300, 100);
+        mensajito.setLocationRelativeTo(this);
+
+        lblMensaje = new Label(mensaje);
+        btnCerrar = new Button("Cerrar");
+        btnCerrar.addActionListener(e -> mensajito.dispose());
+
+        mensajito.add(lblMensaje);
+        mensajito.add(btnCerrar);
+        mensajito.setVisible(true);
     }
 }

@@ -13,28 +13,22 @@ public class VentanaProveedor extends Frame {
     private Panel panelContenido;
     private Panel formulario;
     private Panel panelBotones;
-    private Panel buscar;
 
-    private Label lbl;
     private Label lblMensaje;
 
     private Button btnRegistrar;
     private Button btnListar;
-    private Button btnBuscar;
     private Button btnGuardar;
     private Button btnLimpiar;
-    private Button btnBuscarId;
     private Button btnCerrar;
 
     private TextField txtId;
     private TextField txtNombre;
-    private TextField txtBuscar;
-    private TextArea area;
-    private TextArea resultado;
+    private TextArea areaSalida;
 
     private ArrayList<Proveedor> listaProveedores;
 
-    public VentanaProveedor() {
+    public VentanaProveedor(ArrayList<Proveedor> listaProveedores) {
         this.listaProveedores = listaProveedores;
 
         setTitle("Gestión de Proveedores");
@@ -44,16 +38,13 @@ public class VentanaProveedor extends Frame {
 
         panelGeneral = new Panel(new BorderLayout());
 
-        panelMenu = new Panel(new GridLayout(1, 3));
+        panelMenu = new Panel(new GridLayout(1, 2));
         panelMenu.setBackground(Color.LIGHT_GRAY);
 
         btnRegistrar = new Button("Registrar Proveedor");
         btnListar = new Button("Listar Proveedores");
-        btnBuscar = new Button("Buscar por ID");
-
         panelMenu.add(btnRegistrar);
         panelMenu.add(btnListar);
-        panelMenu.add(btnBuscar);
 
         panelContenido = new Panel(new BorderLayout());
         panelContenido.setBackground(Color.WHITE);
@@ -64,7 +55,6 @@ public class VentanaProveedor extends Frame {
 
         btnRegistrar.addActionListener(e -> mostrarFormularioRegistro());
         btnListar.addActionListener(e -> mostrarListaProveedores());
-        btnBuscar.addActionListener(e -> mostrarFormularioBusqueda());
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -91,35 +81,18 @@ public class VentanaProveedor extends Frame {
         btnGuardar = new Button("Registrar");
         btnLimpiar = new Button("Limpiar");
 
-        btnGuardar.addActionListener(e -> {
-            try {
-                int id = Integer.parseInt(txtId.getText().trim());
-                String nombre = txtNombre.getText().trim();
-
-                if (!nombre.isEmpty()) {
-                    Proveedor nuevo = new Proveedor(id, nombre);
-                    listaProveedores.add(nuevo);
-                    txtId.setText("");
-                    txtNombre.setText("");
-                    mostrarAlerta("Proveedor registrado exitosamente.");
-                } else {
-                    mostrarAlerta("Nombre no puede estar vacío.");
-                }
-            } catch (NumberFormatException ex) {
-                mostrarAlerta("ID inválido. Ingrese un número.");
-            }
-        });
-
-        btnLimpiar.addActionListener(e -> {
-            txtId.setText("");
-            txtNombre.setText("");
-        });
+        btnGuardar.addActionListener(e -> registrarProveedor());
+        btnLimpiar.addActionListener(e -> limpiarCampos());
 
         panelBotones = new Panel(new FlowLayout());
         panelBotones.add(btnGuardar);
         panelBotones.add(btnLimpiar);
 
+        areaSalida = new TextArea();
+        areaSalida.setEditable(false);
+
         panelContenido.add(formulario, BorderLayout.NORTH);
+        panelContenido.add(areaSalida, BorderLayout.CENTER);
         panelContenido.add(panelBotones, BorderLayout.SOUTH);
 
         panelContenido.revalidate();
@@ -129,62 +102,40 @@ public class VentanaProveedor extends Frame {
     private void mostrarListaProveedores() {
         panelContenido.removeAll();
 
-        area = new TextArea();
+        areaSalida = new TextArea();
+        areaSalida.setEditable(false);
+
         for (Proveedor p : listaProveedores) {
-            area.append(p.toString() + "\n");
+            areaSalida.append(p.toString() + "\n");
         }
 
-        panelContenido.add(area, BorderLayout.CENTER);
-
+        panelContenido.add(areaSalida, BorderLayout.CENTER);
         panelContenido.revalidate();
         panelContenido.repaint();
     }
 
-    private void mostrarFormularioBusqueda() {
-        panelContenido.removeAll();
+    private void registrarProveedor() {
+        try {
+            int id = Integer.parseInt(txtId.getText().trim());
+            String nombre = txtNombre.getText().trim();
 
-        buscar = new Panel(new FlowLayout());
-        lbl = new Label("Ingrese ID:");
-        txtBuscar = new TextField(10);
-        btnBuscarId = new Button("Buscar");
+            if (!nombre.isEmpty()) {
+                Proveedor nuevo = new Proveedor(id, nombre);
+                listaProveedores.add(nuevo);
 
-        resultado = new TextArea(5, 50);
-        resultado.setEditable(false);
-
-        btnBuscarId.addActionListener(e -> {
-            try {
-                int id = Integer.parseInt(txtBuscar.getText());
-                Proveedor proveedor = buscarProveedorPorId(id);
-                resultado.setText("");
-
-                if (proveedor != null) {
-                    resultado.append(proveedor.toString());
-                } else {
-                    resultado.append("Proveedor no encontrado.");
-                }
-            } catch (NumberFormatException ex) {
-                resultado.setText("ID inválido.");
+                areaSalida.setText("\uD83D\uDCCB Proveedor registrado:\n" + nuevo.toString());
+                limpiarCampos();
+            } else {
+                mostrarAlerta("Por favor, complete todos los campos.");
             }
-        });
-
-        buscar.add(lbl);
-        buscar.add(txtBuscar);
-        buscar.add(btnBuscarId);
-
-        panelContenido.add(buscar, BorderLayout.NORTH);
-        panelContenido.add(resultado, BorderLayout.CENTER);
-
-        panelContenido.revalidate();
-        panelContenido.repaint();
+        } catch (NumberFormatException e) {
+            mostrarAlerta("ID inválido. Ingrese un número válido.");
+        }
     }
 
-    private Proveedor buscarProveedorPorId(int id) {
-        for (Proveedor p : listaProveedores) {
-            if (p.getId() == id) {
-                return p;
-            }
-        }
-        return null;
+    private void limpiarCampos() {
+        txtId.setText("");
+        txtNombre.setText("");
     }
 
     private void mostrarAlerta(String mensaje) {

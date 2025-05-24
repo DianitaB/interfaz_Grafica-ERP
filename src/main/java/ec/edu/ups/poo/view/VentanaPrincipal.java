@@ -1,6 +1,7 @@
 package ec.edu.ups.poo.view;
 
 import ec.edu.ups.poo.model.SolicitudCompra;
+import ec.edu.ups.poo.model.Proveedor;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,6 +20,8 @@ public class VentanaPrincipal extends Frame {
     private Button botonSalir;
     private Label labelTitulo;
 
+    // ✅ Lista compartida de proveedores
+    private ArrayList<Proveedor> listaProveedores = new ArrayList<>();
 
     public VentanaPrincipal(ArrayList<SolicitudCompra> listaSolicitudes) {
         setTitle("Sistema ERP");
@@ -39,15 +42,15 @@ public class VentanaPrincipal extends Frame {
         panelGeneral.add(panelTitulo, BorderLayout.NORTH);
 
         botonSolicitudCompra = new Button("Solicitudes de Compra");
-        botonProductos = new Button("Productos");
         botonProveedores = new Button("Proveedores");
+        botonProductos = new Button("Productos");
         botonEmpleados = new Button("Empleados");
         botonSalir = new Button("Salir");
 
-        // ✅ Usar la lista recibida por el constructor
+        // ✅ Pasar la lista real a las ventanas
         botonSolicitudCompra.addActionListener(e -> new VentanaSolicitud(listaSolicitudes));
-        botonProductos.addActionListener(e -> new VentanaProducto(null));
-        botonProveedores.addActionListener(e -> new VentanaProveedor());
+        botonProveedores.addActionListener(e -> new VentanaProveedor(listaProveedores));
+        botonProductos.addActionListener(e -> new VentanaProducto(listaProveedores));
         botonEmpleados.addActionListener(e -> new VentanaEmpleado());
         botonSalir.addActionListener(e -> System.exit(0));
 
@@ -77,3 +80,4 @@ public class VentanaPrincipal extends Frame {
     }
 
 }
+
