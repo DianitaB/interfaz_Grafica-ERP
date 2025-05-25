@@ -1,6 +1,8 @@
 package ec.edu.ups.poo.model;
 
-public abstract class Persona {
+import java.io.Serializable;
+
+public abstract class Persona implements Serializable {
     protected int id;
     protected String nombre;
     protected String correoElectronico;
@@ -43,5 +45,15 @@ public abstract class Persona {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "id: " + id +
+                "Nombre: " + nombre + '\'' +
+                "Correo Electrónico:'" + correoElectronico + '\'' +
+                "Teléfono: " + telefono + '\'' +
+                '}';
     }
 }

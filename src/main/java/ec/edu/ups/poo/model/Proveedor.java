@@ -2,35 +2,29 @@ package ec.edu.ups.poo.model;
 
 import java.io.Serializable;
 
-public class Proveedor implements Serializable {
-    private int id;
-    private String nombre;
+public class Proveedor extends Persona  implements Serializable  {
+    private String tipoContribuyente;
 
-
-    public Proveedor(int id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
+    public String getTipoContribuyente() {
+        return tipoContribuyente;
     }
 
-
-    public int getId() {
-        return id;
+    public void setTipoContribuyente(String tipoContribuyente) {
+        this.tipoContribuyente = tipoContribuyente;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public Proveedor(int id, String nombre, String correoElectronico, String telefono, String tipoContribuyente) {
+        super(id, nombre, correoElectronico, telefono);
+        this.tipoContribuyente = tipoContribuyente;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     @Override
     public String toString() {
-        return "Proveedor{" + "ID=" + id + ", Nombre='" + nombre + "'}";
+        return "\nProveedor ID: " + id +
+                "\nNombre: " + nombre +
+                "\nCorreo: " + correoElectronico +
+                "\nTeléfono: " + telefono +
+                "\nTipo: " + tipoContribuyente;
     }
 }

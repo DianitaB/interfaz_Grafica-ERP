@@ -15,7 +15,7 @@ public class Producto implements Serializable {
         this.proveedor = proveedor;
     }
 
-    // Getters
+
     public int getId() {
         return id;
     }
@@ -32,7 +32,6 @@ public class Producto implements Serializable {
         return proveedor;
     }
 
-    // Setters (opcional, si planeas modificar los productos luego)
     public void setId(int id) {
         this.id = id;
     }
@@ -51,11 +50,10 @@ public class Producto implements Serializable {
 
     @Override
     public String toString() {
-        return "Producto{" +
-                "ID=" + id +
-                ", Nombre='" + nombre + '\'' +
-                ", Precio=" + precio +
-                ", Proveedor=" + proveedor.getNombre() +
-                '}';
+        return "--Producto--" +
+                "\nID: " + id +
+                "\nNombre: " + nombre  +
+                "\nPrecio: " + precio +
+                "\nProveedor: " + proveedor.getNombre() ;
     }
 }

@@ -20,7 +20,6 @@ public class VentanaPrincipal extends Frame {
     private Button botonSalir;
     private Label labelTitulo;
 
-    // ✅ Lista compartida de proveedores
     private ArrayList<Proveedor> listaProveedores = new ArrayList<>();
 
     public VentanaPrincipal(ArrayList<SolicitudCompra> listaSolicitudes) {
@@ -47,7 +46,6 @@ public class VentanaPrincipal extends Frame {
         botonEmpleados = new Button("Empleados");
         botonSalir = new Button("Salir");
 
-        // ✅ Pasar la lista real a las ventanas
         botonSolicitudCompra.addActionListener(e -> new VentanaSolicitud(listaSolicitudes));
         botonProveedores.addActionListener(e -> new VentanaProveedor(listaProveedores));
         botonProductos.addActionListener(e -> new VentanaProducto(listaProveedores));
@@ -58,8 +56,8 @@ public class VentanaPrincipal extends Frame {
         panelBotones.setBackground(Color.CYAN);
         panelBotones.setPreferredSize(new Dimension(300, 400));
         panelBotones.add(botonSolicitudCompra);
-        panelBotones.add(botonProductos);
         panelBotones.add(botonProveedores);
+        panelBotones.add(botonProductos);
         panelBotones.add(botonEmpleados);
         panelBotones.add(botonSalir);
 

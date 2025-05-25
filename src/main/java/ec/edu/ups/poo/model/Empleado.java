@@ -1,8 +1,8 @@
 package ec.edu.ups.poo.model;
 
-import ec.edu.ups.poo.model.Persona;
+import java.io.Serializable;
 
-public class Empleado extends Persona {
+public class Empleado extends Persona implements Serializable {
 
     private String departamento;
     private String cargo;
@@ -34,9 +34,9 @@ public class Empleado extends Persona {
         return "Empleado ID: " + id +
                 "\nNombre: " + nombre +
                 "\nCorreo: " + correoElectronico +
-                "\nTeléfono=" + telefono +
-                "\nDepartamento=" + departamento +
-                "\nCargo=" + cargo + "]";
+                "\nTeléfono: " + telefono +
+                "\nDepartamento: " + departamento +
+                "\nCargo: " + cargo + "]";
     }
 
     private static java.util.List<Empleado> empleados = new java.util.ArrayList<>();

@@ -1,5 +1,4 @@
 package ec.edu.ups.poo.model;
 
-public class DetalleSolicitud {
-
+public interface Calcular {
 }

@@ -24,6 +24,9 @@ public class VentanaProveedor extends Frame {
 
     private TextField txtId;
     private TextField txtNombre;
+    private TextField txtCorreo;
+    private TextField txtTelefono;
+    private TextField txttipo;
     private TextArea areaSalida;
 
     private ArrayList<Proveedor> listaProveedores;
@@ -68,15 +71,24 @@ public class VentanaProveedor extends Frame {
     private void mostrarFormularioRegistro() {
         panelContenido.removeAll();
 
-        formulario = new Panel(new GridLayout(2, 2, 10, 10));
+        formulario = new Panel(new GridLayout(5, 2, 10, 10));
 
         txtId = new TextField();
         txtNombre = new TextField();
+        txtCorreo = new TextField();
+        txtTelefono = new TextField();
+        txttipo = new TextField();
 
         formulario.add(new Label("ID del Proveedor:"));
         formulario.add(txtId);
         formulario.add(new Label("Nombre del Proveedor:"));
         formulario.add(txtNombre);
+        formulario.add(new Label("Correo Electrónico:"));
+        formulario.add(txtCorreo);
+        formulario.add(new Label("Teléfono del Proveedor:"));
+        formulario.add(txtTelefono);
+        formulario.add(new Label("Tipo de Contribuyente:"));
+        formulario.add(txttipo);
 
         btnGuardar = new Button("Registrar");
         btnLimpiar = new Button("Limpiar");
@@ -115,27 +127,39 @@ public class VentanaProveedor extends Frame {
     }
 
     private void registrarProveedor() {
-        try {
-            int id = Integer.parseInt(txtId.getText().trim());
-            String nombre = txtNombre.getText().trim();
+        String idTexto = txtId.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String correo = txtCorreo.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+        String tipo = txttipo.getText().trim();
 
-            if (!nombre.isEmpty()) {
-                Proveedor nuevo = new Proveedor(id, nombre);
-                listaProveedores.add(nuevo);
-
-                areaSalida.setText("\uD83D\uDCCB Proveedor registrado:\n" + nuevo.toString());
-                limpiarCampos();
-            } else {
-                mostrarAlerta("Por favor, complete todos los campos.");
-            }
-        } catch (NumberFormatException e) {
-            mostrarAlerta("ID inválido. Ingrese un número válido.");
+        if (idTexto.isEmpty() || nombre.isEmpty() || correo.isEmpty() ||
+                telefono.isEmpty() || tipo.isEmpty()) {
+            mostrarAlerta("Por favor, complete todos los campos.");
+            return;
         }
+
+        int id;
+        try {
+            id = Integer.parseInt(idTexto);
+        } catch (NumberFormatException e) {
+            mostrarAlerta("ID inválido. Ingrese solo números.");
+            return;
+        }
+
+        Proveedor nuevo = new Proveedor(id, nombre, correo, telefono, tipo);
+        listaProveedores.add(nuevo);
+
+        areaSalida.setText("Proveedor registrado:\n" + nuevo.toString());
+        limpiarCampos();
     }
 
     private void limpiarCampos() {
         txtId.setText("");
         txtNombre.setText("");
+        txtCorreo.setText("");
+        txtTelefono.setText("");
+        txttipo.setText("");
     }
 
     private void mostrarAlerta(String mensaje) {

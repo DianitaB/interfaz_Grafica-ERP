@@ -1,6 +1,7 @@
 package ec.edu.ups.poo.view;
 
 import ec.edu.ups.poo.model.Empleado;
+import ec.edu.ups.poo.model.DepartamentoRepositorio;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -63,8 +64,12 @@ public class VentanaEmpleado extends Frame {
         TextField txtNombre = new TextField();
         TextField txtCorreo = new TextField();
         TextField txtTelefono = new TextField();
-        TextField txtDepartamento = new TextField();
+        Choice choiceDepartamento = new Choice();
         TextField txtCargo = new TextField();
+
+        for (String departamento : DepartamentoRepositorio.obtenerDepartamentos()) {
+            choiceDepartamento.add(departamento);
+        }
 
         formulario.add(new Label("ID:"));
         formulario.add(txtId);
@@ -75,7 +80,7 @@ public class VentanaEmpleado extends Frame {
         formulario.add(new Label("Teléfono:"));
         formulario.add(txtTelefono);
         formulario.add(new Label("Departamento:"));
-        formulario.add(txtDepartamento);
+        formulario.add(choiceDepartamento);
         formulario.add(new Label("Cargo:"));
         formulario.add(txtCargo);
 
@@ -88,7 +93,7 @@ public class VentanaEmpleado extends Frame {
                 String nombre = txtNombre.getText();
                 String correo = txtCorreo.getText();
                 String telefono = txtTelefono.getText();
-                String departamento = txtDepartamento.getText();
+                String departamento = choiceDepartamento.getSelectedItem();
                 String cargo = txtCargo.getText();
 
                 Empleado nuevo = new Empleado(id, nombre, correo, telefono, departamento, cargo);
@@ -98,8 +103,8 @@ public class VentanaEmpleado extends Frame {
                 txtNombre.setText("");
                 txtCorreo.setText("");
                 txtTelefono.setText("");
-                txtDepartamento.setText("");
                 txtCargo.setText("");
+                choiceDepartamento.select(0);
 
                 mostrarMensaje("Empleado registrado exitosamente.");
             } catch (NumberFormatException ex) {
@@ -112,8 +117,8 @@ public class VentanaEmpleado extends Frame {
             txtNombre.setText("");
             txtCorreo.setText("");
             txtTelefono.setText("");
-            txtDepartamento.setText("");
             txtCargo.setText("");
+            choiceDepartamento.select(0);
         });
 
         Panel panelBotones = new Panel(new FlowLayout());
