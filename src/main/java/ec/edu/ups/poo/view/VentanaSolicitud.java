@@ -1,6 +1,7 @@
 package ec.edu.ups.poo.view;
 
 import ec.edu.ups.poo.model.EstadoSolicitud;
+import ec.edu.ups.poo.model.Producto;
 import ec.edu.ups.poo.model.SolicitudCompra;
 
 import java.awt.*;
@@ -41,9 +42,12 @@ public class VentanaSolicitud extends Frame {
     private TextArea area;
     private TextArea resultado;
     private ArrayList<SolicitudCompra> listaSolicitudes;
+    private ArrayList<Producto> listaProductos;
 
-    public VentanaSolicitud(ArrayList<SolicitudCompra> listaSolicitudes) {
+
+    public VentanaSolicitud(ArrayList<SolicitudCompra> listaSolicitudes, ArrayList<Producto> listaProductos) {
         this.listaSolicitudes = listaSolicitudes;
+        this.listaProductos = listaProductos;
 
         setTitle("Gestión de Solicitudes de Compra");
         setSize(600, 500);

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class VentanaProveedor extends Frame {
 
+    private ArrayList<Proveedor> listaProveedores;
+
     private Panel panelGeneral;
     private Panel panelMenu;
     private Panel panelContenido;
@@ -29,7 +31,7 @@ public class VentanaProveedor extends Frame {
     private TextField txttipo;
     private TextArea areaSalida;
 
-    private ArrayList<Proveedor> listaProveedores;
+
 
     public VentanaProveedor(ArrayList<Proveedor> listaProveedores) {
         this.listaProveedores = listaProveedores;

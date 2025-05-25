@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Proveedor extends Persona  implements Serializable  {
     private String tipoContribuyente;
 
+
     public String getTipoContribuyente() {
         return tipoContribuyente;
     }

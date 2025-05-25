@@ -5,8 +5,11 @@ import ec.edu.ups.poo.model.DepartamentoRepositorio;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 
 public class VentanaEmpleado extends Frame {
+    private ArrayList<Empleado> listaEmpleados;
 
     private Panel panelGeneral;
     private Panel panelMenu;
@@ -16,7 +19,9 @@ public class VentanaEmpleado extends Frame {
     private Button btnListar;
     private Button btnBuscar;
 
-    public VentanaEmpleado() {
+    public VentanaEmpleado(ArrayList<Empleado> listaEmpleados) {
+
+        this.listaEmpleados = listaEmpleados;
         setTitle("Gestión de Empleados");
         setSize(600, 500);
         setLayout(new BorderLayout());

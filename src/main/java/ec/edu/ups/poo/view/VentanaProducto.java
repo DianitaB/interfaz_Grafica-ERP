@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class VentanaProducto extends Frame {
 
+    private ArrayList<Proveedor> listaProveedores;
+    private ArrayList<Producto> listaProductos;
+    private ArrayList<Proveedor> proveedoresEnChoice = new ArrayList<>();
+
     private Panel panelGeneral;
     private Panel panelMenu;
     private Panel panelContenido;
@@ -29,12 +33,9 @@ public class VentanaProducto extends Frame {
     private Choice proveedorChoice;
     private TextArea areaSalida;
 
-    private ArrayList<Proveedor> proveedores;
-    private ArrayList<Producto> productos = new ArrayList<>();
-    private ArrayList<Proveedor> proveedoresEnChoice = new ArrayList<>();
-
-    public VentanaProducto(ArrayList<Proveedor> proveedores) {
-        this.proveedores = proveedores;
+    public VentanaProducto(ArrayList<Proveedor> listaProveedores, ArrayList<Producto> listaProductos) {
+        this.listaProveedores = listaProveedores;
+        this.listaProductos = listaProductos;
 
         setTitle("Gestión de Productos");
         setSize(600, 500);
@@ -118,7 +119,7 @@ public class VentanaProducto extends Frame {
         areaSalida = new TextArea();
         areaSalida.setEditable(false);
 
-        for (Producto p : productos) {
+        for (Producto p : listaProductos) {
             areaSalida.append(p.toString() + "\n");
         }
 
@@ -132,11 +133,11 @@ public class VentanaProducto extends Frame {
             proveedorChoice.removeAll();
             proveedoresEnChoice.clear();
 
-            if (proveedores.isEmpty()) {
+            if (listaProveedores.isEmpty()) {
                 proveedorChoice.add("Sin proveedores disponibles");
             } else {
-                for (Proveedor p : proveedores) {
-                    proveedorChoice.add(p.toString());
+                for (Proveedor p : listaProveedores) {
+                    proveedorChoice.add(p.getNombre());
                     proveedoresEnChoice.add(p);
                 }
             }
@@ -153,15 +154,15 @@ public class VentanaProducto extends Frame {
             if (index >= 0 && index < proveedoresEnChoice.size()) {
                 Proveedor proveedorSeleccionado = proveedoresEnChoice.get(index);
                 Producto nuevo = new Producto(id, nombre, precio, proveedorSeleccionado);
-                productos.add(nuevo);
+                listaProductos.add(nuevo);
 
-                areaSalida.setText("\uD83D\uDCE6 Producto Registrado:\n" + nuevo.toString());
+                areaSalida.setText("Producto registrado:\n" + nuevo.toString());
                 limpiarCampos();
             } else {
-                mostrarAlerta("Proveedor inválido o no seleccionado.");
+                mostrarAlerta("Selecciona un proveedor válido.");
             }
         } catch (NumberFormatException e) {
-            mostrarAlerta("ID o Precio inválido. Asegúrese de ingresar valores numéricos válidos.");
+            mostrarAlerta("ID y Precio deben ser numéricos.");
         }
     }
 
