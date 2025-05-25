@@ -15,8 +15,6 @@ public class VentanaPrincipal extends Frame {
     private ArrayList<Empleado> listaEmpleados;
     private ArrayList<SolicitudCompra> listaSolicitudes;
 
-
-
     private Panel panelGeneral;
     private Panel panelTitulo;
     private Panel panelBotones;
@@ -33,6 +31,7 @@ public class VentanaPrincipal extends Frame {
                             ArrayList<Producto> listaProductos,
                             ArrayList<Empleado> listaEmpleados,
                             ArrayList<SolicitudCompra> listaSolicitudes) {
+
         this.listaProveedores = listaProveedores;
         this.listaProductos = listaProductos;
         this.listaEmpleados = listaEmpleados;

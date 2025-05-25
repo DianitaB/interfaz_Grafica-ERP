@@ -31,7 +31,8 @@ public class VentanaProveedor extends Frame {
     private TextField txttipo;
     private TextArea areaSalida;
 
-
+    private Proveedor nuevo;
+    private Dialog mensajito;
 
     public VentanaProveedor(ArrayList<Proveedor> listaProveedores) {
         this.listaProveedores = listaProveedores;
@@ -149,7 +150,7 @@ public class VentanaProveedor extends Frame {
             return;
         }
 
-        Proveedor nuevo = new Proveedor(id, nombre, correo, telefono, tipo);
+        nuevo = new Proveedor(id, nombre, correo, telefono, tipo);
         listaProveedores.add(nuevo);
 
         areaSalida.setText("Proveedor registrado:\n" + nuevo.toString());
@@ -165,7 +166,7 @@ public class VentanaProveedor extends Frame {
     }
 
     private void mostrarAlerta(String mensaje) {
-        Dialog mensajito = new Dialog(this, "Mensaje", true);
+        mensajito = new Dialog(this, "Mensaje", true);
         mensajito.setLayout(new FlowLayout());
         mensajito.setSize(300, 100);
         mensajito.setLocationRelativeTo(this);

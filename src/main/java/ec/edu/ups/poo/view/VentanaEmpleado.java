@@ -9,11 +9,39 @@ import java.util.ArrayList;
 
 
 public class VentanaEmpleado extends Frame {
+
     private ArrayList<Empleado> listaEmpleados;
+
+    private Empleado nuevo;
+    private Empleado empleado;
 
     private Panel panelGeneral;
     private Panel panelMenu;
     private Panel panelContenido;
+    private Panel formulario;
+    private Panel panelBotones;
+    private Panel buscar;
+
+    private Dialog dialogo;
+
+    private TextField txtId;
+    private TextField txtNombre;
+    private TextField txtCorreo;
+    private TextField txtTelefono;
+    private TextField txtCargo;
+    private TextField txtBuscar;
+
+    private Label lblId;
+    private Label lblMensaje;
+
+    private Button btnGuardar;
+    private Button btnLimpiar;
+    private Button btnBuscarId;
+    private Button btnCerrar;
+
+    private Choice choiceDepartamento;
+    private TextArea area;
+    private TextArea resultado;
 
     private Button btnRegistrar;
     private Button btnListar;
@@ -63,14 +91,13 @@ public class VentanaEmpleado extends Frame {
     private void mostrarFormularioRegistro() {
         panelContenido.removeAll();
 
-        Panel formulario = new Panel(new GridLayout(7, 2, 10, 10));
-
-        TextField txtId = new TextField();
-        TextField txtNombre = new TextField();
-        TextField txtCorreo = new TextField();
-        TextField txtTelefono = new TextField();
-        Choice choiceDepartamento = new Choice();
-        TextField txtCargo = new TextField();
+        formulario = new Panel(new GridLayout(7, 2, 10, 10));
+        txtId = new TextField();
+        txtNombre = new TextField();
+        txtCorreo = new TextField();
+        txtTelefono = new TextField();
+        choiceDepartamento = new Choice();
+        txtCargo = new TextField();
 
         for (String departamento : DepartamentoRepositorio.obtenerDepartamentos()) {
             choiceDepartamento.add(departamento);
@@ -89,8 +116,8 @@ public class VentanaEmpleado extends Frame {
         formulario.add(new Label("Cargo:"));
         formulario.add(txtCargo);
 
-        Button btnGuardar = new Button("Registrar");
-        Button btnLimpiar = new Button("Limpiar");
+        btnGuardar = new Button("Registrar");
+        btnLimpiar = new Button("Limpiar");
 
         btnGuardar.addActionListener(e -> {
             try {
@@ -101,9 +128,8 @@ public class VentanaEmpleado extends Frame {
                 String departamento = choiceDepartamento.getSelectedItem();
                 String cargo = txtCargo.getText();
 
-                Empleado nuevo = new Empleado(id, nombre, correo, telefono, departamento, cargo);
+                nuevo = new Empleado(id, nombre, correo, telefono, departamento, cargo);
                 Empleado.registrar(nuevo);
-
                 txtId.setText("");
                 txtNombre.setText("");
                 txtCorreo.setText("");
@@ -126,7 +152,7 @@ public class VentanaEmpleado extends Frame {
             choiceDepartamento.select(0);
         });
 
-        Panel panelBotones = new Panel(new FlowLayout());
+        panelBotones = new Panel(new FlowLayout());
         panelBotones.add(btnGuardar);
         panelBotones.add(btnLimpiar);
 
@@ -140,7 +166,7 @@ public class VentanaEmpleado extends Frame {
     private void mostrarListaEmpleados() {
         panelContenido.removeAll();
 
-        TextArea area = new TextArea();
+        area = new TextArea();
         for (Empleado e : Empleado.getEmpleados()) {
             area.append(e.toString() + "\n");
         }
@@ -153,18 +179,18 @@ public class VentanaEmpleado extends Frame {
     private void mostrarFormularioBusqueda() {
         panelContenido.removeAll();
 
-        Panel buscar = new Panel(new FlowLayout());
-        Label lbl = new Label("Ingrese ID:");
-        TextField txtBuscar = new TextField(10);
-        Button btnBuscarId = new Button("Buscar");
+        buscar = new Panel(new FlowLayout());
+        lblId = new Label("Ingrese ID:");
+        txtBuscar = new TextField(10);
+        btnBuscarId = new Button("Buscar");
 
-        TextArea resultado = new TextArea(5, 50);
+        resultado = new TextArea(5, 50);
         resultado.setEditable(false);
 
         btnBuscarId.addActionListener(e -> {
             try {
                 int id = Integer.parseInt(txtBuscar.getText());
-                Empleado empleado = Empleado.buscarPorId(id);
+                empleado = Empleado.buscarPorId(id);
 
                 resultado.setText("");
                 if (empleado != null) {
@@ -177,7 +203,7 @@ public class VentanaEmpleado extends Frame {
             }
         });
 
-        buscar.add(lbl);
+        buscar.add(lblId);
         buscar.add(txtBuscar);
         buscar.add(btnBuscarId);
 
@@ -189,13 +215,13 @@ public class VentanaEmpleado extends Frame {
     }
 
     private void mostrarMensaje(String mensaje) {
-        Dialog dialogo = new Dialog(this, "Mensaje", true);
+        dialogo = new Dialog(this, "Mensaje", true);
         dialogo.setLayout(new FlowLayout());
         dialogo.setSize(300, 100);
         dialogo.setLocationRelativeTo(this);
 
-        Label lblMensaje = new Label(mensaje);
-        Button btnCerrar = new Button("Cerrar");
+        lblMensaje = new Label(mensaje);
+        btnCerrar = new Button("Cerrar");
         btnCerrar.addActionListener(e -> dialogo.dispose());
 
         dialogo.add(lblMensaje);

@@ -1,9 +1,7 @@
 package ec.edu.ups.poo.view;
-
 import ec.edu.ups.poo.model.EstadoSolicitud;
 import ec.edu.ups.poo.model.Producto;
 import ec.edu.ups.poo.model.SolicitudCompra;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -11,6 +9,8 @@ import java.util.Date;
 
 public class VentanaSolicitud extends Frame {
 
+    private ArrayList<SolicitudCompra> listaSolicitudes;
+    private ArrayList<Producto> listaProductos;
 
     private Panel panelGeneral;
     private Panel panelMenu;
@@ -41,8 +41,8 @@ public class VentanaSolicitud extends Frame {
     private TextField txtBuscar;
     private TextArea area;
     private TextArea resultado;
-    private ArrayList<SolicitudCompra> listaSolicitudes;
-    private ArrayList<Producto> listaProductos;
+
+    private Dialog mensajito;
 
 
     public VentanaSolicitud(ArrayList<SolicitudCompra> listaSolicitudes, ArrayList<Producto> listaProductos) {
@@ -245,7 +245,7 @@ public class VentanaSolicitud extends Frame {
     }
 
     private void mostrarAlerta(String mensaje) {
-        Dialog mensajito = new Dialog(this, "Mensaje", true);
+        mensajito = new Dialog(this, "Mensaje", true);
         mensajito.setLayout(new FlowLayout());
         mensajito.setSize(300, 100);
         mensajito.setLocationRelativeTo(this);

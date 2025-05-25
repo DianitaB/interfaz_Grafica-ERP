@@ -1,8 +1,6 @@
 package ec.edu.ups.poo.view;
-
 import ec.edu.ups.poo.model.Proveedor;
 import ec.edu.ups.poo.model.Producto;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -18,6 +16,7 @@ public class VentanaProducto extends Frame {
     private Panel panelContenido;
     private Panel formulario;
     private Panel panelBotones;
+    private Dialog mensajito;
 
     private Label lblMensaje;
 
@@ -75,7 +74,6 @@ public class VentanaProducto extends Frame {
         panelContenido.removeAll();
 
         formulario = new Panel(new GridLayout(4, 2, 10, 10));
-
         txtId = new TextField();
         txtNombre = new TextField();
         txtPrecio = new TextField();
@@ -173,7 +171,7 @@ public class VentanaProducto extends Frame {
     }
 
     private void mostrarAlerta(String mensaje) {
-        Dialog mensajito = new Dialog(this, "Mensaje", true);
+        mensajito = new Dialog(this, "Mensaje", true);
         mensajito.setLayout(new FlowLayout());
         mensajito.setSize(300, 100);
         mensajito.setLocationRelativeTo(this);
